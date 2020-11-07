@@ -25,6 +25,7 @@ const findAll = async (req, res) => {
 
   try {
     const grades = await Grade.find(condition);
+
     res.send(grades);
 
     logger.info(`GET /grade`);
@@ -51,6 +52,7 @@ const findOne = async (req, res) => {
 
 const update = async (req, res) => {
   const data = req.body;
+  delete data._id
 
   if (!data) {
     return res.status(400).send({
@@ -61,7 +63,7 @@ const update = async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const grade = await Grade.updateOne(data, { _id })
+    const grade = await Grade.updateOne({ _id }, data)
     res.send(grade)
     logger.info(`PUT /grade - ${id} - ${JSON.stringify(req.body)}`);
   } catch (error) {
